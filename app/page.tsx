@@ -9,9 +9,6 @@ export type Task = {
   }
 
 export default async function Home() {
-  const handlClick = ()=>{
-    console.log("clicked")
-  }
 
   const getTasks = async () => {
     const res = await fetch("http://localhost:3001/getTasks", {cache: "no-store"});

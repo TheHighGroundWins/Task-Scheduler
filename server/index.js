@@ -15,6 +15,7 @@ const pool = new Pool({
 
 
 const bodyParser = require('body-parser');
+const { revalidatePath } = require('next/cache');
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors({
@@ -39,21 +40,48 @@ pool.connect((err, client, release) => {
 
 app.get('/getTasks', (req, res, next) => {
     pool.query('Select * from tasks')
-        .then(testData => {
-            console.log(testData);
-            res.send(testData.rows);
+        .then(taskData => {
+            res.send(taskData.rows);
         })
 })
-app.post('/insertTask', async (req, res) => {
+
+app.post('/updateOrInsert', async (req, res) => {
     const {title, urgency, date} = req.body;
-    try {
-        const result = await pool.query("Insert INTO tasks (title, urgency, date) VALUES($1,$2,$3) RETURNING *",
-        [title, urgency, date]);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send("Error inserting data");
+    try{
+    pool.query(`INSERT INTO tasks (title, urgency, date) VALUES ($1, $2, $3)
+   ON CONFLICT (title) DO UPDATE
+   SET urgency = EXCLUDED.urgency,
+       date = EXCLUDED.date
+       RETURNING *`,
+        [title, urgency, date]
+    )
+        .then(taskData => {
+            console.log(taskData);
+        })
+    } catch {
+        res.status(500).send("error inserting or updating data");
     }
+
+    revalidatePath('/')
 })
+
+app.post('/deleteTask', async (req, res) => {
+    const {title} = req.body;
+    try{
+    pool.query(`DELETE FROM tasks WHERE title = $1
+       RETURNING *`,
+        [title]
+    )
+        .then(taskData => {
+            console.log(taskData);
+        })
+    } catch {
+        res.status(500).send("error deleting data");
+    }
+    revalidatePath('/')
+
+})
+
 
 // Require the Routes API  
 // Create a Server and run it on the port 3000
