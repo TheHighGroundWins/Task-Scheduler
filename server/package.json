@@ -1,0 +1,19 @@
+{
+  "name": "tasks-db",
+  "version": "1.0.0",
+  "description": "database for storing tasks",
+  "license": "ISC",
+  "author": "Juan Carlos Carlos Alberto",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "pg": "^8.16.3",
+    "pg-hstore": "^2.3.4"
+  }
+}
