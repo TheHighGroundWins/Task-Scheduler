@@ -12,7 +12,10 @@ const pool = new Pool({
     database: process.env.TASK_DATABASE,
     password: process.env.TASK_PASSWORD,
     dialect: process.env.TASK_DIALECT,
-    port: 5432
+    port: 5432,
+      ssl: {
+    rejectUnauthorized: false // works for development/testing
+  }
 });
 
 

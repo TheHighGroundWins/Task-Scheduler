@@ -1,5 +1,5 @@
 "use client"
-import React, { Component, useState } from 'react'
+import React, { useState } from 'react'
 import {Task} from '../page'
 
 const TaskBoxR = ({task, setTask}:  {task: Task, setTask: (task: Task) => void}) => {

@@ -1,5 +1,5 @@
 "use client"
-import React, { Component, useState } from 'react'
+import React, { useState } from 'react'
 import { Task } from '../page'
 import TaskBox from "../components/TaskBox";
 import TaskBoxR from "../components/TaskBoxR";
@@ -7,6 +7,7 @@ import { Urgency } from './Urgencies';
 import { deleteTask } from '../actions/tasks';
 import { useRouter } from "next/navigation";
 import { updateOrInsert } from '../actions/tasks';
+import Image from 'next/image';
 
 
 const TasksContainer = ({taskList}: {taskList: Task[]}) => {
@@ -66,9 +67,9 @@ const TasksContainer = ({taskList}: {taskList: Task[]}) => {
         <div className="flex flex-col row-span-2 row-start-2 gap-3">
             <div className='flex gap-3'>
             <button className="bg-green-400 text-4xl w-fit p-2 border-2 h-fit hover:bg-green-500 active:bg-green-600" onClick={updateAndClear}>
-          <img src="plus.svg"/>
+          <Image src="plus.svg" alt='+'/>
         </button>
-          <button className="bg-red-500 text-4xl w-fit p-2 border-2 h-fit hover:bg-red-600 active:bg-red-700" onClick={() => deleteAndRefresh()}><img src="minus.svg"></img></button>
+          <button className="bg-red-500 text-4xl w-fit p-2 border-2 h-fit hover:bg-red-600 active:bg-red-700" onClick={() => deleteAndRefresh()}><Image src="minus.svg" alt="-"/></button>
             </div>
           
                 <TaskBox task={task} setTask={setTask}/>
