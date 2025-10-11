@@ -1,15 +1,17 @@
+require("dotenv").config();
 const express = require('express');
 const cors = require("cors")
 
 const app = express();
+
 const Pool = require('pg').Pool;
 
 const pool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'tasksbackend',
-    password: 'postgres',
-    dialect: 'postgres',
+    user: process.env.TASK_USER,
+    host: process.env.TASK_HOST,
+    database: process.env.TASK_DATABASE,
+    password: process.env.TASK_PASSWORD,
+    dialect: process.env.TASK_DIALECT,
     port: 5432
 });
 
