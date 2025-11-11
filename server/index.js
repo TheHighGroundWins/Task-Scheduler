@@ -13,9 +13,6 @@ const pool = new Pool({
     password: process.env.TASK_PASSWORD,
     dialect: process.env.TASK_DIALECT,
     port: 5432,
-      ssl: {
-    rejectUnauthorized: false // works for development/testing
-  }
 });
 
 
@@ -24,7 +21,7 @@ const { revalidatePath } = require('next/cache');
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: ['http://localhost:3000','https://main.d10gr8eauv9ac7.amplifyapp.com/'],
 }))
 
 
@@ -39,7 +36,6 @@ pool.connect((err, client, release) => {
             return console.error(
                 'Error executing query', err.stack)
         }
-        console.log("Connected to Database !")
     })
 })
 
@@ -60,9 +56,6 @@ app.post('/updateOrInsert', async (req, res) => {
        RETURNING *`,
         [title, urgency, date]
     )
-        .then(taskData => {
-            console.log(taskData);
-        })
     } catch {
         res.status(500).send("error inserting or updating data");
     }
@@ -77,9 +70,6 @@ app.post('/deleteTask', async (req, res) => {
        RETURNING *`,
         [title]
     )
-        .then(taskData => {
-            console.log(taskData);
-        })
     } catch {
         res.status(500).send("error deleting data");
     }
